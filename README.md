@@ -2,16 +2,17 @@
 
 
 ## Sistemi güncelliyoruz
-
+```
 sudo apt update  
 sudo apt upgrade -y
-
+```sh
+```
 sudo apt-get install git curl build-essential make jq gcc snapd chrony lz4 tmux unzip bc -y
-
+```sh
 
 
 ## Ignite CLI  yüklüyoruz
-
+```
 wget https://github.com/ignite/cli/releases/download/v0.27.1/ignite_0.27.1_linux_amd64.tar.gz
 
 chmod +x ignite_0.27.1_linux_amd64.tar.gz
@@ -23,13 +24,15 @@ rm -rf ignite_0.27.1_linux_amd64.tar.gz
 sudo mv ignite /usr/local/bin
 
 ignite version
-
-// 🛸 Ignite CLI v28.3.0 is available
-
+```sh
+```
+🛸 Ignite CLI v28.3.0 is available
+```txt
 
 
 ## go yüklüyoruz
 
+```
 sudo rm -rf /usr/local/go 
 
 curl -L https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
@@ -37,53 +40,54 @@ curl -L https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/
 echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
 
 source .bash_profile
-
+```sh
 
 
 ## Junction node indirip kuruyoruz
-
+```
 wget https://github.com/airchains-network/junction/releases/download/v0.1.0/junctiond
 
 chmod +x junctiond
 
 sudo mv junctiond /usr/local/bin
-
+```sh
 
 ## Moniker adınızı değiştirin aşağıdaki komudu girin
-
+```
 junctiond init <MONIKER> 
-
+```sh
 
 ## genesis ekliyoruz
-
+```
 wget https://github.com/airchains-network/junction/releases/download/v0.1.0/genesis.json
 
 cp genesis.json ~/.junction/config/genesis.json
-
+```sh
 
 ## Seed ve peer ekliyoruz ve min gas ayarı yapıyoruz
-
+```
 SEEDS=""
 PEERS="2d1ea4833843cc1433e3c44e69e297f357d2d8bd@5.78.118.106:26656"
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.junction/config/config.toml
 
 sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.00025amf\"|" $HOME/.junction/config/app.toml
-
+```sh
 
 ## Pruning komutları (opsiyonel)
-
+```
 sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.junction/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.junction/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"50\"/" $HOME/.junction/config/app.toml
-
+```sh
 
 ## screen içinde çalıştırıyoruz
-
+```
 screen -S node
 
 junctiond start
+```sh
 
-
+## Wallet oluşturuyoruz . Mnomanicleri kaydedin
 
 junctiond keys add wallet
 
@@ -101,10 +105,10 @@ junctiond query bank balances <wallet_adress>
 
 junctiond status
 
-
+```
 https://testnets.cosmosrun.info/junction/blocks
 
-
+```txt
 
 
 #validator oluşturmak için validator.json oluşturuyoruz. {} içinde yazan kodları direk yapıştırın ve içlerini doldurun sadece pubkey yazan komudu değiştirirken aşağıdaki çıktıyı değiştirin."junctiond tendermint show-validator" çıktısını pubkey yazan yere yazın ve CTRL+X ile kaydedip kapatın
@@ -112,10 +116,10 @@ https://testnets.cosmosrun.info/junction/blocks
 
 / junctiond tendermint show-validator  
 
-
+```
 nano ~/.junction/config/validator.json
-
-
+```sh
+```
 
 {
         "pubkey": {"@type":"/cosmos.crypto.ed25519.PubKey","key":"+9FxV2E8vVqgk4ayncBm34Vtaq+Tj+R3+U6rEdNoMIw="},
@@ -131,17 +135,17 @@ nano ~/.junction/config/validator.json
         "chain-id": "junction"
 }
 
-
+```sh
 /Aşağıdaki komudu girin
 
-
+```
 junctiond tx staking create-validator ~/.junction/config/validator.json --from wallet --gas="200000" --fees="1000amf" --chain-id=junction
-
+```sh
 
 ## Explorer
-
+```
 https://testnets.cosmosrun.info/junction/blocks
-
+```txt
 
 ## kontrol için aşağıdaki komudu çalıştırın
 
